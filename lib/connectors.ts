@@ -1,7 +1,7 @@
 import { createConnectors } from "./connector-contract.mjs";
 import { getConnectorBinding } from "./connector-context";
 
-/** Keep invocation context on this request; never cache it across visitors. */
+/** Mantém o contexto da chamada nesta requisição; nunca o armazene em cache entre visitantes. */
 export function connectorsForRequest() {
   return createConnectors(getConnectorBinding());
 }

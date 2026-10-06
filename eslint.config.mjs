@@ -5,9 +5,9 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
+  // Sobrescreve os padrões ignorados pelo eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
+    // Padrões ignorados pelo eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
@@ -16,8 +16,8 @@ const eslintConfig = defineConfig([
   {
     files: ["components/ui/**/*.{ts,tsx}", "hooks/use-mobile.ts"],
     rules: {
-      // These files are vendored verbatim from shadcn@4.17.0. Keep the
-      // registry source intact while applying the stricter rules to Site code.
+      // Estes arquivos foram copiados sem alterações do shadcn@4.17.0. Mantém a
+      // fonte do registro intacta, aplicando regras mais rigorosas ao código do site.
       "@typescript-eslint/no-unused-vars": "off",
       "react-hooks/purity": "off",
       "react-hooks/set-state-in-effect": "off",

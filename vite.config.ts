@@ -10,7 +10,7 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
 
 const { d1, r2 } = hostingConfig;
 
-// macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
+// O Seatbelt do macOS bloqueia FSEvents; por isso, as pré-visualizações do Codex usam polling para HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
@@ -37,18 +37,18 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async ({ command }) => {
-  // Use Miniflare's local Request.cf placeholder unless fetching is requested.
+  // Usa o placeholder local Request.cf do Miniflare, exceto quando uma busca é solicitada.
   process.env.CLOUDFLARE_CF_FETCH_ENABLED ??= "false";
   process.env.WRANGLER_SEND_METRICS ??= "false";
 
-  // Keep Wrangler and Miniflare state project-local. These are non-secret tool
-  // settings; application environment belongs in ignored `.env*` files.
+  // Mantém o estado do Wrangler e do Miniflare local ao projeto. São configurações
+  // não sigilosas das ferramentas; o ambiente da aplicação fica em arquivos `.env*` ignorados.
   process.env.WRANGLER_WRITE_LOGS ??= "false";
   process.env.WRANGLER_LOG_PATH ??= ".wrangler/logs";
   process.env.WRANGLER_REGISTRY_PATH ??= ".wrangler/dev-registry";
   process.env.MINIFLARE_REGISTRY_PATH ??= ".wrangler/registry";
 
-  // Wrangler snapshots its log path while the Cloudflare plugin is imported.
+  // O Wrangler captura o caminho dos logs durante a importação do plugin Cloudflare.
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {

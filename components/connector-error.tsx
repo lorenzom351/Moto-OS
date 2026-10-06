@@ -2,7 +2,7 @@ import { LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { connectorErrorRecovery } from "@/lib/connector-errors.mjs";
 
-/** Render in the affected feature, leaving the rest of the Site usable. */
+/** Renderiza o erro no recurso afetado, mantendo o restante do site utilizável. */
 export function ConnectorError({
   error,
   connectorName,
