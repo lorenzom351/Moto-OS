@@ -1,0 +1,8 @@
+import { NextResponse } from "next/server";
+import { deleteServiceOrder,getServiceOrder,updateServiceOrder } from "@/lib/data/service-orders";
+import { requireApiSession } from "@/lib/auth/session";
+import { serviceOrderSchema } from "@/lib/validation/schemas";
+type Context={params:Promise<{id:string}>};
+export async function GET(request:Request,{params}:Context){if(!await requireApiSession(request))return NextResponse.json({success:false,message:"Sessão expirada."},{status:401});const order=await getServiceOrder((await params).id);return order?NextResponse.json({success:true,data:order}):NextResponse.json({success:false,message:"Ordem de Serviço não encontrada."},{status:404});}
+export async function PUT(request:Request,{params}:Context){if(!await requireApiSession(request))return NextResponse.json({success:false,message:"Sessão expirada."},{status:401});const parsed=serviceOrderSchema.safeParse(await request.json());if(!parsed.success)return NextResponse.json({success:false,message:parsed.error.issues[0]?.message??"Revise os dados informados."},{status:400});const order=await updateServiceOrder((await params).id,parsed.data);return order?NextResponse.json({success:true,data:order}):NextResponse.json({success:false,message:"Ordem de Serviço não encontrada."},{status:404});}
+export async function DELETE(request:Request,{params}:Context){if(!await requireApiSession(request))return NextResponse.json({success:false,message:"Sessão expirada."},{status:401});const deleted=await deleteServiceOrder((await params).id);return deleted?NextResponse.json({success:true}):NextResponse.json({success:false,message:"Ordem de Serviço não encontrada."},{status:404});}

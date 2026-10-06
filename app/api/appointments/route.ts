@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { requireApiSession } from "@/lib/auth/session";
+import { appointmentSchema } from "@/lib/validation/appointment-schema";
+import { createAppointment,listAppointments,listDateBlocks } from "@/lib/data/appointments";
+export async function GET(request:Request){if(!await requireApiSession(request))return NextResponse.json({success:false,message:"Sessão expirada."},{status:401});return NextResponse.json({success:true,data:{appointments:await listAppointments(),blocks:await listDateBlocks()}});}
+export async function POST(request:Request){if(!await requireApiSession(request))return NextResponse.json({success:false,message:"Sessão expirada."},{status:401});const parsed=appointmentSchema.safeParse(await request.json());if(!parsed.success)return NextResponse.json({success:false,message:parsed.error.issues[0]?.message??"Revise os dados informados."},{status:400});try{return NextResponse.json({success:true,data:await createAppointment(parsed.data)},{status:201});}catch(error){if(error instanceof Error&&error.message==="DATE_UNAVAILABLE")return NextResponse.json({success:false,message:"Esta data não está mais disponível para agendamento."},{status:409});throw error;}}

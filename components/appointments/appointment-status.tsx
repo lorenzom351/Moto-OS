@@ -1,0 +1,3 @@
+import type { AppointmentStatus as Status } from "@/types/appointment";
+const labels:Record<Status,string>={SCHEDULED:"Agendado",COMPLETED:"Concluído",CANCELLED:"Cancelado",NO_SHOW:"Não compareceu"};
+export function AppointmentStatus({status}:{status:Status}){const style=status==="SCHEDULED"?"border-red-900/60 bg-red-950/40 text-red-300":status==="COMPLETED"?"border-emerald-900/50 bg-emerald-950/25 text-emerald-300":"border-[#3a3a3a] bg-[#202020] text-[#aaa]";return <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-black uppercase tracking-wider ${style}`}>{labels[status]}</span>}

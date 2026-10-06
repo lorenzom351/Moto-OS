@@ -1,0 +1,5 @@
+import Link from "next/link";
+import type { ButtonHTMLAttributes,ReactNode } from "react";
+const base="inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-[#e60012]/60 disabled:cursor-not-allowed disabled:opacity-55";
+export function BrandButton({variant="primary",className="",...props}:ButtonHTMLAttributes<HTMLButtonElement>&{variant?:"primary"|"secondary"|"danger"}){const styles=variant==="primary"?"bg-[#e60012] text-white hover:bg-[#ff1020]":variant==="danger"?"bg-[#a30a14] text-white hover:bg-[#c5101b]":"border border-[#343434] bg-[#1a1a1a] text-white hover:bg-[#222]";return <button className={`${base} ${styles} ${className}`} {...props}/>;}
+export function BrandLink({href,children,variant="primary",className=""}:{href:string;children:ReactNode;variant?:"primary"|"secondary";className?:string}){return <Link href={href} className={`${base} ${variant==="primary"?"bg-[#e60012] text-white hover:bg-[#ff1020]":"border border-[#343434] bg-[#1a1a1a] text-white hover:bg-[#222]"} ${className}`}>{children}</Link>;}

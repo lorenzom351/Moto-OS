@@ -1,0 +1,9 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { FileDown,Pencil,Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { BrandButton,BrandLink } from "@/components/ui/brand-button";
+import { AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,AlertDialogTrigger } from "@/components/ui/alert-dialog";
+export function OrderActions({id,number}:{id:string;number:string}){const router=useRouter();async function remove(){const response=await fetch(`/api/service-orders/${id}`,{method:"DELETE"});if(response.ok){toast.success("Ordem de Serviço excluída.");router.push("/historico");router.refresh();}else toast.error("Não foi possível excluir a Ordem de Serviço.");}
+  return <div className="no-print flex flex-wrap gap-2"><BrandLink href={`/os/${id}/editar`} variant="secondary"><Pencil size={17}/>Editar</BrandLink><a href={`/api/service-orders/${id}/pdf`} target="_blank" className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[#343434] bg-[#1a1a1a] px-4 text-sm font-bold text-white hover:bg-[#222]"><FileDown size={17}/>Gerar PDF</a><AlertDialog><AlertDialogTrigger asChild><BrandButton variant="danger"><Trash2 size={17}/>Excluir</BrandButton></AlertDialogTrigger><AlertDialogContent className="border-[#353535] bg-[#151515] text-white"><AlertDialogHeader><AlertDialogTitle>Tem certeza que deseja excluir a {number}?</AlertDialogTitle><AlertDialogDescription className="text-[#aaa]">Esta ação não poderá ser desfeita.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel className="border-[#444] bg-[#1d1d1d] text-white hover:bg-[#252525]">Cancelar</AlertDialogCancel><AlertDialogAction onClick={remove} className="bg-[#b50c17] text-white hover:bg-[#dc1220]">Excluir</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>;
+}
