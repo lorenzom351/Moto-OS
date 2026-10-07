@@ -15,6 +15,8 @@ export function AppointmentCalendar({initialAppointments,initialBlocks}:{initial
   const today=todayISO();const todayDate=parseISODate(today);const [year,setYear]=useState(todayDate.getFullYear());const [month,setMonth]=useState(todayDate.getMonth());const [appointments,setAppointments]=useState(initialAppointments);const [blocks,setBlocks]=useState(initialBlocks);const [formOpen,setFormOpen]=useState(false);const [formDate,setFormDate]=useState(today);const [editing,setEditing]=useState<Appointment>();const [selected,setSelected]=useState<Appointment>();const [blockOpen,setBlockOpen]=useState(false);const [selectedBlock,setSelectedBlock]=useState<AppointmentDateBlock>();
   const active=appointments.filter(item=>item.status==="SCHEDULED");
   const isAvailable=(date:string,excludeId?:string)=>!isPastDate(date)&&isWorkingDay(date)&&!blocks.some(block=>block.date===date)&&!active.some(item=>item.date===date&&item.id!==excludeId);
+  // A disponibilidade depende das coleções abaixo, que são as dependências reais deste cálculo.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const nextAvailable=useMemo(()=>{for(let i=0;i<90;i++){const date=addDays(today,i);if(isAvailable(date))return date;}return today;},[today,appointments,blocks]);
   const days=useMemo(()=>{const first=new Date(year,month,1,12);const count=new Date(year,month+1,0).getDate();const result:(string|null)[]=Array(first.getDay()).fill(null);for(let day=1;day<=count;day++)result.push(toISODate(new Date(year,month,day,12)));while(result.length%7)result.push(null);return result;},[year,month]);
   function moveMonth(delta:number){const date=new Date(year,month+delta,1);setYear(date.getFullYear());setMonth(date.getMonth());}

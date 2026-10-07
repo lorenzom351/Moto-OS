@@ -5,9 +5,9 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { resolve } from "node:path";
 import type { Plugin } from "vite";
 
-const localUserId = "local_seedy";
-const localEmail = "seedy@sites.test";
-const localFullName = "Seedy";
+const localUserId = process.env.SITES_LOCAL_USER_ID;
+const localEmail = process.env.SITES_LOCAL_USER_EMAIL;
+const localFullName = process.env.SITES_LOCAL_USER_NAME;
 const localCookieName = "__sites_local_auth";
 const localHosts = new Set(["localhost", "127.0.0.1", "::1"]);
 const localAddresses = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
@@ -41,6 +41,10 @@ export function sites({ mockAuth = true } = {}): Plugin {
     },
     configureServer(server) {
       if (!mockAuth) return;
+      if (!localUserId || !localEmail || !localFullName) {
+        server.config.logger.info("Sites local sign-in disabled: local identity is not configured.");
+        return;
+      }
       const secure = Boolean(server.config.server.https);
 
       server.config.logger.info(`Sites local sign-in: ${localEmail}`);
