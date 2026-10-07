@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const SESSION_COOKIE = "moto_os_session";
+export const SESSION_DURATION_SECONDS = 12 * 60 * 60;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
@@ -26,7 +27,7 @@ async function key() {
 }
 
 export async function createSessionToken(username: string) {
-  const payload = encode(encoder.encode(JSON.stringify({ username, expiresAt: Date.now() + 1000 * 60 * 60 * 12 } satisfies AuthenticatedSession)));
+  const payload = encode(encoder.encode(JSON.stringify({ username, expiresAt: Date.now() + SESSION_DURATION_SECONDS * 1000 } satisfies AuthenticatedSession)));
   const signature = await crypto.subtle.sign("HMAC", await key(), encoder.encode(payload));
   return `${payload}.${encode(new Uint8Array(signature))}`;
 }

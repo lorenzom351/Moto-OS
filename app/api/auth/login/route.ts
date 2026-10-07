@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loginSchema } from "@/lib/validation/schemas";
-import { createSessionToken, SESSION_COOKIE } from "@/lib/auth/session";
+import { createSessionToken, SESSION_COOKIE, SESSION_DURATION_SECONDS } from "@/lib/auth/session";
 
 function requiredCredential(name: "ADMIN_USER" | "ADMIN_PASSWORD") {
   const value = process.env[name];
@@ -26,6 +26,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: "Usuário ou senha inválidos." }, { status: 401 });
   }
   const response = NextResponse.json({ success: true });
-  response.cookies.set(SESSION_COOKIE, await createSessionToken(expectedUser), { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 60 * 60 * 12 });
+  response.cookies.set(SESSION_COOKIE, await createSessionToken(expectedUser), { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: SESSION_DURATION_SECONDS });
   return response;
 }
