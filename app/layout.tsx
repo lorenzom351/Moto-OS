@@ -3,11 +3,8 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  applicationName: "Moto OS",
-  title: {
-    default: "Moto OS | Gestão de Oficina",
-    template: "%s | Moto OS",
-  },
+  applicationName: "Moto-OS",
+  title: "Moto-OS",
   description: "Gestão de ordens de serviço, manutenções e agenda da oficina.",
   manifest: "/moto-os-identidade-completa/manifest.webmanifest",
   icons: {
